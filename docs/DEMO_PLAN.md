@@ -7,7 +7,7 @@
 | Wave 0 | Planning docs (SCOPE, CONTRACTS, DEMO_PLAN, WAVES) | Complete    |
 | Wave 1 | React scaffold + contracts implementation          | In Progress |
 | Wave 2 | MVP vertical slices (Feed + Article + Auth UI)     | Not Started |
-| Wave 3 | Test suite migration + polish                      | Not Started |
+| Wave 3 | Test suite migration + polish                      | In Progress |
 
 > **Note**: This demo plan describes the final state after all waves are complete. During earlier waves, some flows will only show placeholder pages in the React app. See [PROGRESS.md](./PROGRESS.md) for current feature status.
 
@@ -109,6 +109,27 @@ After running both apps, verify these critical behaviors:
 | Feed loads (React)       | Visit `/`                   | Article cards render                         |
 | Article detail (Angular) | Click article title         | Full article page renders                    |
 | Article detail (React)   | Click article title         | Full article page renders                    |
+
+---
+
+## Running Tests
+
+### Angular Unit Tests
+
+```bash
+cd ts-angular-realworld-example-app
+npm test
+# Expected: All tests pass
+```
+
+### React Unit Tests (Vitest)
+
+```bash
+cd ts-angular-realworld-example-app/react-app
+npm test
+# Runs: vitest run
+# Expected: 36 passed (tokenService.test.ts)
+```
 
 ---
 
