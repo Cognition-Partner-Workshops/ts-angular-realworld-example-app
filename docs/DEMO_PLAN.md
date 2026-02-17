@@ -1,5 +1,18 @@
 # DEMO_PLAN.md - Side-by-Side Angular + React Demo
 
+## Migration Status
+
+| Wave   | Description                                        | Status      |
+| ------ | -------------------------------------------------- | ----------- |
+| Wave 0 | Planning docs (SCOPE, CONTRACTS, DEMO_PLAN, WAVES) | Complete    |
+| Wave 1 | React scaffold + contracts implementation          | In Progress |
+| Wave 2 | MVP vertical slices (Feed + Article + Auth UI)     | Not Started |
+| Wave 3 | Test suite migration + polish                      | Not Started |
+
+> **Note**: This demo plan describes the final state after all waves are complete. During earlier waves, some flows will only show placeholder pages in the React app. See [PROGRESS.md](./PROGRESS.md) for current feature status.
+
+---
+
 ## Prerequisites
 
 - Node.js >= 20.11.1
