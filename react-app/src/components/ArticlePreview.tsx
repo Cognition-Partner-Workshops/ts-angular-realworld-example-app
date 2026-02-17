@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Article } from '../types';
+import { defaultImage } from '../utils/defaultImage';
 import FavoriteButton from './FavoriteButton';
 
 interface ArticlePreviewProps {
@@ -28,7 +29,7 @@ export default function ArticlePreview({ article: initialArticle }: ArticlePrevi
     <div className="article-preview" data-testid="article-preview">
       <div className="article-meta">
         <Link to={`/profile/${article.author.username}`} data-testid="article-preview-author">
-          <img src={article.author.image || 'https://api.realworld.io/images/smiley-cyrus.jpeg'} alt={article.author.username} />
+          <img src={defaultImage(article.author.image)} alt={article.author.username} />
         </Link>
         <div className="info">
           <Link to={`/profile/${article.author.username}`} className="author" data-testid="article-preview-author">

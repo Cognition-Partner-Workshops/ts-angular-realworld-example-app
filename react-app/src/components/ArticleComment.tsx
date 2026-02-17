@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import type { Comment } from "../types";
 import { useAuth } from "../auth/AuthContext";
-
-const DEFAULT_IMAGE = "https://api.realworld.io/images/smiley-cyrus.jpeg";
+import { defaultImage } from "../utils/defaultImage";
 
 interface ArticleCommentProps {
   comment: Comment;
@@ -15,7 +14,7 @@ export default function ArticleComment({
 }: ArticleCommentProps) {
   const { user } = useAuth();
   const canModify = user?.username === comment.author.username;
-  const authorImage = comment.author.image || DEFAULT_IMAGE;
+  const authorImage = defaultImage(comment.author.image);
   const formattedDate = new Date(comment.createdAt).toLocaleDateString(
     "en-US",
     { year: "numeric", month: "long", day: "numeric" },

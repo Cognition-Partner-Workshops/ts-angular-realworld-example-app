@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import type { Article } from "../types";
 import type { ReactNode } from "react";
-
-const DEFAULT_IMAGE = "https://api.realworld.io/images/smiley-cyrus.jpeg";
+import { defaultImage } from "../utils/defaultImage";
 
 interface ArticleMetaProps {
   article: Article;
@@ -10,7 +9,7 @@ interface ArticleMetaProps {
 }
 
 export default function ArticleMeta({ article, children }: ArticleMetaProps) {
-  const authorImage = article.author.image || DEFAULT_IMAGE;
+  const authorImage = defaultImage(article.author.image);
   const formattedDate = new Date(article.createdAt).toLocaleDateString(
     "en-US",
     { year: "numeric", month: "long", day: "numeric" },

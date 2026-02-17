@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { defaultImage } from "../utils/defaultImage";
 
 export default function Header() {
   const { isAuthenticated, user } = useAuth();
@@ -63,13 +64,11 @@ export default function Header() {
                   to={`/profile/${user?.username ?? ""}`}
                   data-testid="header-profile"
                 >
-                  {user?.image && (
-                    <img
-                      src={user.image}
-                      className="user-pic"
-                      alt={user.username}
-                    />
-                  )}
+                  <img
+                    src={defaultImage(user?.image)}
+                    className="user-pic"
+                    alt={user?.username ?? ""}
+                  />
                   {user?.username}
                 </NavLink>
               </li>
