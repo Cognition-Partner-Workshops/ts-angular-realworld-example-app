@@ -25,8 +25,16 @@ import { DefaultImagePipe } from '../../../../shared/pipes/default-image.pipe';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * User profile page displaying bio, avatar, and tabbed article lists.
+ *
+ * Shows a "Settings" link when viewing your own profile, or a
+ * Follow/Unfollow button when viewing another user's profile.
+ * Child routes render the user's authored articles or favorited articles.
+ */
 export class ProfileComponent implements OnInit {
   profile = signal<Profile | null>(null);
+  /** True when the displayed profile belongs to the currently authenticated user. */
   isUser = signal(false);
   errors = signal<Errors | null>(null);
   destroyRef = inject(DestroyRef);
@@ -57,6 +65,7 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  /** Updates the local profile state after the follow button emits a change. */
   onToggleFollowing(profile: Profile) {
     this.profile.set(profile);
   }

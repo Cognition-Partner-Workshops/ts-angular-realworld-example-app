@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 export class ProfileService {
   constructor(private readonly http: HttpClient) {}
 
+  /** Fetches a user's public profile by username. Result is cached via shareReplay. */
   get(username: string): Observable<Profile> {
     return this.http.get<{ profile: Profile }>('/profiles/' + username).pipe(
       map((data: { profile: Profile }) => data.profile),
@@ -22,12 +23,14 @@ export class ProfileService {
     );
   }
 
+  /** Follows a user and returns the updated profile with `following: true`. */
   follow(username: string): Observable<Profile> {
     return this.http
       .post<{ profile: Profile }>('/profiles/' + username + '/follow', {})
       .pipe(map((data: { profile: Profile }) => data.profile));
   }
 
+  /** Unfollows a user and returns the updated profile with `following: false`. */
   unfollow(username: string): Observable<Profile> {
     return this.http
       .delete<{ profile: Profile }>('/profiles/' + username + '/follow')

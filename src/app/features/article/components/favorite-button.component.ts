@@ -34,11 +34,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Heart button for favoriting/unfavoriting an article.
+ * Redirects unauthenticated users to the registration page.
+ * Emits the new favorited state on success so the parent can update optimistically.
+ */
 export class FavoriteButtonComponent {
   destroyRef = inject(DestroyRef);
+  /** Prevents double-clicks while the API call is in flight. */
   isSubmitting = signal(false);
 
   @Input() article!: Article;
+  /** Emits the new `favorited` boolean after a successful API call. */
   @Output() toggle = new EventEmitter<boolean>();
 
   constructor(
@@ -47,6 +54,7 @@ export class FavoriteButtonComponent {
     private readonly userService: UserService,
   ) {}
 
+  /** Calls favorite or unfavorite depending on the article's current state. */
   toggleFavorite(): void {
     this.isSubmitting.set(true);
 

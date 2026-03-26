@@ -14,6 +14,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [ArticleListComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Displays articles authored by the profile user.
+ * Loaded as a child route of {@link ProfileComponent} at `/profile/:username`.
+ */
 export default class ProfileArticlesComponent implements OnInit {
   profile = signal<Profile | null>(null);
   articlesConfig = signal<ArticleListConfig | null>(null);
@@ -24,6 +28,7 @@ export default class ProfileArticlesComponent implements OnInit {
     private readonly profileService: ProfileService,
   ) {}
 
+  /** Fetches the profile and configures an article list filtered by author. */
   ngOnInit(): void {
     this.profileService
       .get(this.route.snapshot.params['username'])

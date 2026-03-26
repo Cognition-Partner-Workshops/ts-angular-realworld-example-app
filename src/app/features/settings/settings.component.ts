@@ -7,6 +7,7 @@ import { ListErrorsComponent } from '../../shared/components/list-errors.compone
 import { Errors } from '../../core/models/errors.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+/** Reactive form shape for the user settings page. */
 interface SettingsForm {
   image: FormControl<string>;
   username: FormControl<string>;
@@ -21,6 +22,10 @@ interface SettingsForm {
   imports: [ListErrorsComponent, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Settings page where authenticated users can update their profile
+ * (avatar URL, username, bio, email, password) or log out.
+ */
 export default class SettingsComponent implements OnInit {
   user!: User;
   settingsForm = new FormGroup<SettingsForm>({
@@ -53,10 +58,12 @@ export default class SettingsComponent implements OnInit {
     }
   }
 
+  /** Logs out the current user and redirects to the home page. */
   logout(): void {
     this.userService.logout();
   }
 
+  /** Persists profile changes and navigates to the updated profile page on success. */
   submitForm() {
     this.isSubmitting.set(true);
 

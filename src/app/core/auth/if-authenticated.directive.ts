@@ -2,6 +2,15 @@ import { DestroyRef, Directive, inject, Input, OnInit, signal, TemplateRef, View
 import { UserService } from './services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+/**
+ * Structural directive that conditionally renders content based on authentication state.
+ *
+ * Usage:
+ * - `*ifAuthenticated="true"` — renders only when the user is logged in
+ * - `*ifAuthenticated="false"` — renders only when the user is logged out
+ *
+ * Reacts to auth state changes in real time via {@link UserService.isAuthenticated}.
+ */
 @Directive({
   selector: '[ifAuthenticated]',
   standalone: true,
@@ -14,7 +23,9 @@ export class IfAuthenticatedDirective<T> implements OnInit {
     private viewContainer: ViewContainerRef,
   ) {}
 
+  /** Whether the directive should show content for authenticated (true) or unauthenticated (false) users. */
   condition = signal(false);
+  /** Tracks whether the template is currently inserted into the DOM. */
   hasView = signal(false);
 
   ngOnInit() {

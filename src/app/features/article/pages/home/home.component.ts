@@ -18,17 +18,30 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [NgClass, ArticleListComponent, RxLet, IfAuthenticatedDirective, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Landing page with feed navigation (Global Feed, Your Feed, Tag Feed),
+ * a paginated article list, and a sidebar of popular tags.
+ *
+ * Reacts to route params and query params:
+ * - `/` — Global feed
+ * - `/tag/:tag` — Articles filtered by tag
+ * - `/?feed=following` — Following feed (requires auth)
+ * - `/?page=N` — Pagination
+ */
 export default class HomeComponent implements OnInit {
   isAuthenticated = signal(false);
+  /** Current article list query configuration, rebuilt on every route change. */
   listConfig = signal<ArticleListConfig>({
     type: 'all',
     filters: {},
   });
   currentPage = signal(1);
+  /** Observable of all popular tags, loaded once for the sidebar. */
   tags$ = inject(TagsService)
     .getAll()
     .pipe(tap(() => this.tagsLoaded.set(true)));
   tagsLoaded = signal(false);
+  /** True when viewing the "Your Feed" tab; used for empty-state messaging. */
   isFollowingFeed = signal(false);
   destroyRef = inject(DestroyRef);
 
@@ -72,6 +85,7 @@ export default class HomeComponent implements OnInit {
       });
   }
 
+  /** Updates the URL query params when the user clicks a pagination button. */
   onPageChange(page: number): void {
     const queryParams: { page?: number; feed?: string } = {};
 

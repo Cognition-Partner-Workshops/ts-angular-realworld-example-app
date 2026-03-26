@@ -32,7 +32,12 @@ import { FavoriteButtonComponent } from './favorite-button.component';
   imports: [ArticleMetaComponent, FavoriteButtonComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Card component rendering an article summary in feed lists.
+ * Displays the author metadata, title, description, tags, and a favorite button.
+ */
 export class ArticlePreviewComponent {
+  /** Reactive signal holding the article data, updated via the input setter. */
   article = signal<Article>(null!);
 
   @Input({ required: true })
@@ -40,6 +45,7 @@ export class ArticlePreviewComponent {
     this.article.set(value);
   }
 
+  /** Optimistically updates the local favorite state and count when the user toggles. */
   toggleFavorite(favorited: boolean): void {
     this.article.update(article => ({
       ...article,

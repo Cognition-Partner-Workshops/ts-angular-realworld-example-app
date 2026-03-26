@@ -37,8 +37,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Button for following/unfollowing a user.
+ * Redirects unauthenticated users to the login page.
+ * Emits the updated {@link Profile} on success so the parent can reflect the change.
+ */
 export class FollowButtonComponent {
   @Input() profile!: Profile;
+  /** Emits the updated profile after a successful follow/unfollow API call. */
   @Output() toggle = new EventEmitter<Profile>();
   isSubmitting = signal(false);
   destroyRef = inject(DestroyRef);
@@ -49,6 +55,7 @@ export class FollowButtonComponent {
     private readonly userService: UserService,
   ) {}
 
+  /** Calls follow or unfollow depending on the profile's current state. */
   toggleFollowing(): void {
     this.isSubmitting.set(true);
 

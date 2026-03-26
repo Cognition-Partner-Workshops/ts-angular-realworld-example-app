@@ -27,6 +27,10 @@ import { DefaultImagePipe } from '../../../shared/pipes/default-image.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, DatePipe, DefaultImagePipe],
 })
+/**
+ * Displays article author metadata: avatar, username link, and publication date.
+ * Accepts projected content (e.g. favorite/follow buttons) via `<ng-content>`.
+ */
 export class ArticleMetaComponent {
   @Input() article!: Article;
 }

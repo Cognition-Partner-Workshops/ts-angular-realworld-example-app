@@ -61,11 +61,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Reusable paginated article list.
+ *
+ * Accepts an {@link ArticleListConfig} to determine which articles to fetch
+ * (global feed, following feed, by tag, by author, or by favorited user).
+ * Emits page changes so the parent component can update the URL query params.
+ */
 export class ArticleListComponent implements OnChanges {
+  /** The current query configuration, updated when `config` input changes. */
   query!: ArticleListConfig;
+  /** Articles returned by the most recent API call. */
   results = signal<Article[]>([]);
+  /** Currently active page number (1-based). */
   page = signal(1);
+  /** Array of page numbers for rendering pagination buttons, e.g. [1, 2, 3]. */
   totalPages = signal<number[]>([]);
+  /** Tracks fetch lifecycle for conditional template rendering. */
   loading = signal(LoadingState.NOT_LOADED);
   LoadingState = LoadingState;
   destroyRef = inject(DestroyRef);
@@ -100,6 +112,7 @@ export class ArticleListComponent implements OnChanges {
 
   constructor(private articlesService: ArticlesService) {}
 
+  /** Navigates to a new page and re-fetches articles. No-ops if already on that page. */
   setPageTo(pageNumber: number) {
     if (pageNumber !== this.page()) {
       this.page.set(pageNumber);
@@ -108,6 +121,7 @@ export class ArticleListComponent implements OnChanges {
     }
   }
 
+  /** Executes the article query with current config and pagination, updating results and page count. */
   runQuery() {
     this.loading.set(LoadingState.LOADING);
     this.results.set([]);

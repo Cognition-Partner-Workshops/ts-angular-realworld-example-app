@@ -14,6 +14,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [ArticleListComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Displays articles favorited by the profile user.
+ * Loaded as a child route of {@link ProfileComponent} at `/profile/:username/favorites`.
+ */
 export default class ProfileFavoritesComponent implements OnInit {
   profile = signal<Profile | null>(null);
   favoritesConfig = signal<ArticleListConfig | null>(null);
@@ -24,6 +28,7 @@ export default class ProfileFavoritesComponent implements OnInit {
     private readonly profileService: ProfileService,
   ) {}
 
+  /** Fetches the profile and configures an article list filtered by favorited username. */
   ngOnInit() {
     this.profileService
       .get(this.route.parent?.snapshot.params['username'])

@@ -40,10 +40,16 @@ import { DefaultImagePipe } from '../../../shared/pipes/default-image.pipe';
   imports: [RouterLink, DatePipe, AsyncPipe, DefaultImagePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Renders a single comment card with author info, body text, and a delete icon.
+ * The delete icon is only visible when the current user is the comment author.
+ */
 export class ArticleCommentComponent {
   @Input() comment!: Comment;
+  /** Emits when the user clicks the delete icon. */
   @Output() delete = new EventEmitter<boolean>();
 
+  /** Observable that resolves to true when the logged-in user authored this comment. */
   canModify$ = inject(UserService).currentUser.pipe(
     map((userData: User | null) => userData?.username === this.comment.author.username),
   );

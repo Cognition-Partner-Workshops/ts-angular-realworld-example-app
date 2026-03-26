@@ -42,13 +42,23 @@ import { DefaultImagePipe } from '../../../../shared/pipes/default-image.pipe';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Full article detail page.
+ *
+ * Loads the article, its comments, and the current user in parallel.
+ * Provides controls for favoriting, following the author, and managing comments.
+ * Edit/delete controls are shown only to the article's author.
+ */
 export default class ArticleComponent implements OnInit {
   article = signal<Article | null>(null);
   currentUser = signal<User | null>(null);
   comments = signal<Comment[]>([]);
+  /** True when the logged-in user is the article's author (enables edit/delete). */
   canModify = signal(false);
+  /** Errors from loading the article itself. */
   errors = signal<Errors | null>(null);
 
+  /** Two-way bound textarea for the new comment form. */
   commentControl = new FormControl<string>('', { nonNullable: true });
   commentFormErrors = signal<Errors | null>(null);
   deleteCommentErrors = signal<Errors | null>(null);
@@ -83,6 +93,7 @@ export default class ArticleComponent implements OnInit {
       });
   }
 
+  /** Optimistically updates the article's favorite state when the button is toggled. */
   onToggleFavorite(favorited: boolean): void {
     this.article.update(article => {
       if (!article) return article;
@@ -94,6 +105,7 @@ export default class ArticleComponent implements OnInit {
     });
   }
 
+  /** Updates the article author's following state after the follow button is toggled. */
   toggleFollowing(profile: Profile): void {
     this.article.update(article => {
       if (!article) return article;
@@ -104,6 +116,7 @@ export default class ArticleComponent implements OnInit {
     });
   }
 
+  /** Deletes the current article and navigates back to the home page. */
   deleteArticle(): void {
     const article = this.article();
     if (!article) return;
@@ -118,6 +131,7 @@ export default class ArticleComponent implements OnInit {
       });
   }
 
+  /** Submits a new comment and prepends it to the comments list on success. */
   addComment() {
     const article = this.article();
     if (!article) return;
@@ -141,6 +155,7 @@ export default class ArticleComponent implements OnInit {
       });
   }
 
+  /** Removes a comment from the article and filters it out of the local list. */
   deleteComment(comment: Comment): void {
     const article = this.article();
     if (!article) return;

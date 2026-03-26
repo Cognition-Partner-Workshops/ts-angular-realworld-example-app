@@ -8,6 +8,7 @@ import { UserService } from '../../../../core/auth/services/user.service';
 import { ListErrorsComponent } from '../../../../shared/components/list-errors.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+/** Reactive form shape for the article editor. Tags are managed separately via a signal. */
 interface ArticleForm {
   title: FormControl<string>;
   description: FormControl<string>;
@@ -20,13 +21,22 @@ interface ArticleForm {
   imports: [ListErrorsComponent, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Create/edit article page.
+ *
+ * In edit mode (route has :slug), loads the existing article and verifies
+ * the current user is the author before allowing edits.
+ * In create mode, starts with an empty form.
+ */
 export default class EditorComponent implements OnInit {
+  /** Tags attached to the article, managed outside the form group. */
   tagList = signal<string[]>([]);
   articleForm: UntypedFormGroup = new FormGroup<ArticleForm>({
     title: new FormControl('', { nonNullable: true }),
     description: new FormControl('', { nonNullable: true }),
     body: new FormControl('', { nonNullable: true }),
   });
+  /** Input field for adding new tags one at a time. */
   tagField = new FormControl<string>('', { nonNullable: true });
 
   errors = signal<Errors | null>(null);
@@ -55,6 +65,7 @@ export default class EditorComponent implements OnInit {
     }
   }
 
+  /** Appends the current tag field value to the tag list if it is non-empty and unique. */
   addTag() {
     // retrieve tag control
     const tag = this.tagField.value;
@@ -66,10 +77,12 @@ export default class EditorComponent implements OnInit {
     this.tagField.reset('');
   }
 
+  /** Removes a tag from the article by name. */
   removeTag(tagName: string): void {
     this.tagList.update(tags => tags.filter(tag => tag !== tagName));
   }
 
+  /** Creates or updates the article and navigates to its detail page on success. */
   submitForm(): void {
     this.isSubmitting.set(true);
     // update any single tag

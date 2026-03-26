@@ -11,6 +11,13 @@ const requireAuth = () => {
   return inject(UserService).isAuthenticated.pipe(map(isAuth => isAuth || router.createUrlTree(['/login'])));
 };
 
+/**
+ * Application route definitions.
+ *
+ * All feature components are lazy-loaded via dynamic imports for code splitting.
+ * Authentication guards protect routes that require login (settings, editor)
+ * and prevent already-authenticated users from visiting login/register.
+ */
 export const routes: Routes = [
   {
     path: '',

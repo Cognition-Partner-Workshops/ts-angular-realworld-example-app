@@ -6,12 +6,20 @@ import { Errors } from '../models/errors.model';
 import { UserService } from './services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+/** Reactive form shape for the login/register page. Username is only present during registration. */
 interface AuthForm {
   email: FormControl<string>;
   password: FormControl<string>;
   username?: FormControl<string>;
 }
 
+/**
+ * Shared login/register page component.
+ *
+ * Determines its mode ('login' or 'register') from the current route URL.
+ * On registration, an additional username field is dynamically added to the form.
+ * Successful authentication redirects to the home page.
+ */
 @Component({
   selector: 'app-auth-page',
   templateUrl: './auth.component.html',
@@ -19,7 +27,9 @@ interface AuthForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AuthComponent implements OnInit {
+  /** Either 'login' or 'register', derived from the route path. */
   authType = '';
+  /** Page heading: 'Sign in' for login, 'Sign up' for register. */
   title = '';
   errors = signal<Errors>({ errors: {} });
   isSubmitting = signal(false);
@@ -57,6 +67,7 @@ export default class AuthComponent implements OnInit {
     }
   }
 
+  /** Submits login or registration credentials and navigates home on success. */
   submitForm(): void {
     this.isSubmitting.set(true);
     this.errors.set({ errors: {} });
