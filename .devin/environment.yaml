@@ -1,0 +1,27 @@
+# https://docs.devin.ai/onboard-devin/environment-yaml
+# Commands run from the repo root.
+# One-time setup (e.g., install system tools, global CLIs).
+initialize: |
+  curl -fsSL https://bun.sh/install | bash
+  source ~/.bash_profile
+  npx playwright install --with-deps chromium
+# Install project dependencies (runs every session).
+maintenance: |
+  source ~/.bash_profile
+  bun install
+# Reference info for agent
+knowledge:
+  - name: lint
+    contents: |
+      bun run format:check
+  - name: test
+    contents: |
+      bun run test -- --run
+      bun run test:e2e
+  - name: build
+    contents: |
+      bun run build
+  - name: dev-server
+    contents: |
+      bun run start
+      # Dev server at http://localhost:4200
